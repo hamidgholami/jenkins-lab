@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Hello') {
+            steps {
+                echo "${JBOSS_PROFILE}"
+            }
+        }
+        stage ('Remote Commands') {
+            steps {
+                		script {
+			echo 'Using remote command over ssh'
+			sh 'echo "Today is:" date'
+			echo '*** Executing remote commands ***'
+			sh '''
+				date
+				ssh -t root@192.168.56.102 << ENDSSH
+				echo "These commands will be run on: $( uname -a )"
+                echo "They are executed by: $( whoami )"
+				date
+				cat /etc/os-release
+				HH=GG
+                source ~/.bash_profile
+                echo -e "MY NAME IS ${BLU}HAMID GHOLAMI${NC}. HEY THERE..!"
+                echo ${HH}
+                echo ${YY}
+                echo ${LL}
+				echo "${JBOSS_PROFILE}"
+				echo ${JBOSS_PROFILE}
+				cd /tmp
+				pwd
+ENDSSH
+'''
+                }
+            }
+        }
+    }
+}
