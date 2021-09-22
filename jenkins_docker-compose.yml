@@ -5,9 +5,11 @@ services:
     privileged: true
     user: root
     ports:
-      - 8080:8080
+      - 8083:8080
       - 50003:50000
     container_name: my-jenkins
+    environment:
+      - JAVA_OPTS="-Dmail.smtp.starttls.enable=true"
     volumes:
       - ~/jenkins_data:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
