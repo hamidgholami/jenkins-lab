@@ -80,7 +80,7 @@ agent any
 					script {
 						try {
 							echo "Package"
-							echo "script{groovyfunctions.packagging("$WORKSPACE","${params.PROJECT}","${params.MVN_GOALS}")}"
+							echo 'script{groovyfunctions.packagging("$WORKSPACE","${params.PROJECT}","${params.MVN_GOALS}")}'
 						} catch (Exception e) {
 										currentBuild.result = 'FAILURE'
 										preStageResult = false                                        
@@ -98,7 +98,7 @@ agent any
 					}
 					stage('Copy Binaries') {
 						steps {
-							echo "script{groovyfunctions.copyBinariesTo("${env.BRANCH_NAME}", "${params.PROJECT}")}"
+							echo 'script{groovyfunctions.copyBinariesTo("${env.BRANCH_NAME}", "${params.PROJECT}")}'
 						}
 					}
 					stage('Deploy Modules') {
