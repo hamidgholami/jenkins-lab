@@ -21,6 +21,7 @@ agent any
     }
     environment {
         HAMID_USER="some_user"
+        JAVA_HOME="/var/jenkins_home/tools/hudson.model.JDK/jdk-8.X"
     }
     stages {
         stage('Init'){
@@ -57,6 +58,7 @@ agent any
                         echo "Compile"
                         echo "script{groovyfunctions.compile()}"
                         // sh "exit 1"
+                        sh "ls ${JAVA_HOME}"
                         sh "java -version"
                         } catch (Exception e) {
                                         currentBuild.result = 'FAILURE'
