@@ -6,7 +6,7 @@ For testing each `jenkinsfile` you need a **Jenkins**, So for this reason I prep
 Thus, first of run below command:
 
 ```bash
-docker-compose -f jenkins_docker-compose.yml -up -d
+docker-compose -f jenkins_docker-compose.yml up -d
 ```
 Then you can use all `jenkinsfile`s in this repo.
 
