@@ -56,6 +56,7 @@ agent any
                         echo "Compile"
                         echo "script{groovyfunctions.compile()}"
                         // sh "exit 1"
+                        sh "java -version"
                         } catch (Exception e) {
                                         currentBuild.result = 'FAILURE'
                                         preStageResult = false                                        
