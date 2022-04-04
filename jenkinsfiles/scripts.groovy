@@ -5,3 +5,5 @@ def initializeGit() {
               git init 
               fi'''
 }
+
+def preStageResult = true
