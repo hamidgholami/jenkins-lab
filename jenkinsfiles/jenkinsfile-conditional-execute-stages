@@ -13,6 +13,8 @@ agent any
 	// 	jdk 'jdk-1.8'
 	// }
 	parameters {
+		choice choices: ['project1', 'project2', 'project3'], name: 'PROJECT'
+		gitParameter branch: '', branchFilter: 'origin/(.*)', defaultValue: 'develop', name: 'Git Branch', quickFilterEnabled: false, selectedValue: 'NONE', sortMode: 'NONE', tagFilter: '*', type: 'GitParameterDefinition'
 		string(name: 'MVN_GOALS', defaultValue: '-U -T 1C')
 	}
     environment {
@@ -88,23 +90,24 @@ agent any
 				}
 		}
 		stage('Publish') {
-			parallel {
-				stage('Show the Stage Name') {
-					steps {
-						echo "Deploy"
+			when { expression { preStageResult == true } }
+				parallel {
+					stage('Show the Stage Name') {
+						steps {
+							echo "Deploy"
+						}
+					}
+					stage('Copy Binaries') {
+						steps {
+							script{groovyfunctions.copyBinariesTo("${env.BRANCH_NAME}", "${params.PROJECT}")}
+						}
+					}
+					stage('Deploy Modules') {
+						steps {
+							script{groovyfunctions.deployModules()}
+						}
 					}
 				}
-				stage('Copy Binaries') {
-					steps {
-						script{groovyfunctions.copyBinariesTo("${env.BRANCH_NAME}", "${params.PROJECT}")}
-					}
-				}
-				stage('Deploy Modules') {
-					steps {
-						script{groovyfunctions.deployModules()}
-					}
-				}
-			}
 		}
     }
 	post {
