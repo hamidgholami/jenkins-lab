@@ -58,7 +58,7 @@ agent any
                         echo "Compile"
                         echo "script{groovyfunctions.compile()}"
                         // sh "exit 1"
-                        sh "ls ${JAVA_HOME}"
+                        // sh "ls ${JAVA_HOME}"
                         sh "java -version"
                         } catch (Exception e) {
                                         currentBuild.result = 'FAILURE'
