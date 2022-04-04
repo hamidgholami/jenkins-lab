@@ -11,7 +11,8 @@ agent any
     }
     tools {
         // maven 'maven-3.8.X'
-        jdk 'jdk-11.0.1'
+        // jdk 'jdk-11.0.1'
+        jdk 'jdk-8.X'
     }
     parameters {
         choice choices: ['project1', 'project2', 'project3'], name: 'PROJECT'
