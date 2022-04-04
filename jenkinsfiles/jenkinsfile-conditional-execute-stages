@@ -13,7 +13,7 @@ agent any
 	// }
 	parameters {
 		choice choices: ['project1', 'project2', 'project3'], name: 'PROJECT'
-		gitParameter branch: '', branchFilter: 'origin/(.*)', defaultValue: 'develop', name: 'Git Branch', quickFilterEnabled: false, selectedValue: 'NONE', sortMode: 'NONE', tagFilter: '*', type: 'GitParameterDefinition'
+		gitParameter branch: '', branchFilter: 'origin/(.*)', defaultValue: 'main', name: 'Git Branch', quickFilterEnabled: false, selectedValue: 'NONE', sortMode: 'NONE', tagFilter: '*', type: 'GitParameterDefinition'
 		string(name: 'MVN_GOALS', defaultValue: '-U -T 1C')
 	}
     environment {
@@ -37,8 +37,8 @@ agent any
 					script {
 						try {
 							echo "Checkout"
-							script{groovyfunctions.funcA("arg1", "arg2", "arg3")}
-							script{groovyfunctions.funcB()}
+							echo "script{groovyfunctions.funcA('arg1', 'arg2', 'arg3')}"
+							echo "script{groovyfunctions.funcB()}"
 						} catch (Exception e) {
 								currentBuild.result = 'FAILURE'
 								preStageResult = false
@@ -52,7 +52,7 @@ agent any
 					script {
 						try {
 						echo "Compile"
-						script{groovyfunctions.compile()}
+						echo "script{groovyfunctions.compile()}"
 						} catch (Exception e) {
 										currentBuild.result = 'FAILURE'
 										preStageResult = false                                        
@@ -66,7 +66,7 @@ agent any
 					script {
 						try {
 							echo "Build"
-							script{groovyfunctions.build()}
+							echo "script{groovyfunctions.build()}"
 						} catch (Exception e) {
 										currentBuild.result = 'FAILURE'
 										preStageResult = false                                        
@@ -80,7 +80,7 @@ agent any
 					script {
 						try {
 							echo "Package"
-							script{groovyfunctions.packagging("$WORKSPACE","${params.PROJECT}","${params.MVN_GOALS}")}
+							echo "script{groovyfunctions.packagging("$WORKSPACE","${params.PROJECT}","${params.MVN_GOALS}")}"
 						} catch (Exception e) {
 										currentBuild.result = 'FAILURE'
 										preStageResult = false                                        
@@ -98,12 +98,12 @@ agent any
 					}
 					stage('Copy Binaries') {
 						steps {
-							script{groovyfunctions.copyBinariesTo("${env.BRANCH_NAME}", "${params.PROJECT}")}
+							echo "script{groovyfunctions.copyBinariesTo("${env.BRANCH_NAME}", "${params.PROJECT}")}"
 						}
 					}
 					stage('Deploy Modules') {
 						steps {
-							script{groovyfunctions.deployModules()}
+							echo "script{groovyfunctions.deployModules()}"
 						}
 					}
 				}
