@@ -1,4 +1,4 @@
-def groovyfunctions
+def groovyfunctions;
 def preStageResult = true;
 
 pipeline {
