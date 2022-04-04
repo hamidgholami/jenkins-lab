@@ -1,5 +1,6 @@
 def groovyfunctions
 def preStageResult = true;
+
 pipeline {
 
 agent any
@@ -13,7 +14,7 @@ agent any
 	// }
 	parameters {
 		choice choices: ['project1', 'project2', 'project3'], name: 'PROJECT'
-		gitParameter branch: '', branchFilter: 'origin/(.*)', defaultValue: 'main', name: 'Git Branch', quickFilterEnabled: false, selectedValue: 'NONE', sortMode: 'NONE', tagFilter: '*', type: 'GitParameterDefinition'
+		gitParameter branch: '', branchFilter: 'origin/(.*)', defaultValue: 'main', name: 'GIT_BRANCH', quickFilterEnabled: false, selectedValue: 'NONE', sortMode: 'NONE', tagFilter: '*', type: 'GitParameterDefinition'
 		string(name: 'MVN_GOALS', defaultValue: '-U -T 1C')
 	}
     environment {
@@ -24,7 +25,7 @@ agent any
 			steps{
     			catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
 					script{
-						currentBuild.displayName = "#${BUILD_NUMBER} - ${env.PROJECT}"
+						currentBuild.displayName = "#${BUILD_NUMBER} - ${env.PROJECT} - ${env.GIT_BRANCH}"
 						groovyfunctions = load "jenkinsfiles/scripts.groovy";
 						cleanWs();
 					}
