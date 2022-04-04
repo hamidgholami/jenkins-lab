@@ -25,7 +25,7 @@ agent any
     			catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
 					script{
 						currentBuild.displayName = "#${BUILD_NUMBER} - ${env.BRANCH_NAME}"
-						groovyfunctions = load "script.groovy";
+						groovyfunctions = load "scripts.groovy";
 						cleanWs();
 					}
     		    }
