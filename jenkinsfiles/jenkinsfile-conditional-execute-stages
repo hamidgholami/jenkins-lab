@@ -8,10 +8,10 @@ agent any
 		timestamps ()
 		timeout(time: 100, unit: "MINUTES")
 	}
-	tools {
-		maven 'maven-3.8.X'
-		jdk 'jdk-1.8'
-	}
+	// tools {
+	// 	maven 'maven-3.8.X'
+	// 	jdk 'jdk-1.8'
+	// }
 	parameters {
 		string(name: 'MVN_GOALS', defaultValue: '-U -T 1C')
 	}
@@ -47,8 +47,8 @@ agent any
 		}
 		stage('Compile') {
 			when { expression { preStageResult == true } }
-				script {
-					steps {
+				steps {
+					script {
 						try {
 						echo "Compile"
 						script{groovyfunctions.compile()}
@@ -61,8 +61,8 @@ agent any
 		}
 		stage('Build') {
 			when { expression { preStageResult == true } }
-				script {
-					steps {
+				steps {
+					script {
 						try {
 							echo "Build"
 							script{groovyfunctions.build()}
@@ -75,8 +75,8 @@ agent any
 		}
 		stage('Package') {
 			when { expression { preStageResult == true } }
-				script {
-					steps {
+				steps {
+					script {
 						try {
 							echo "Package"
 							script{groovyfunctions.packagging("$WORKSPACE","${params.PROJECT}","${params.MVN_GOALS}")}
