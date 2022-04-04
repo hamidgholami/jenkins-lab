@@ -22,7 +22,8 @@ agent any
     }
     environment {
         HAMID_USER="some_user"
-        JAVA_HOME="/var/jenkins_home/tools/"
+        JAVA_HOME="/var/jenkins_home/tools/hudson.model.JDK/jdk-8.X/java-se-8u41-ri"
+        // JAVA_HOME="/var/jenkins_home/tools/hudson.model.JDK/jdk-7.X/java-se-7u75-ri"
     }
     stages {
         stage('Init'){
