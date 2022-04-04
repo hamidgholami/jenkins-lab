@@ -14,7 +14,7 @@ agent any
 	// }
 	parameters {
 		choice choices: ['project1', 'project2', 'project3'], name: 'PROJECT'
-		gitParameter branch: '', branchFilter: 'origin/(.*)', defaultValue: 'main', name: 'GIT_BRANCH', quickFilterEnabled: false, selectedValue: 'NONE', sortMode: 'NONE', tagFilter: '*', type: 'GitParameterDefinition'
+		gitParameter branch: '', branchFilter: 'origin/(.*)', defaultValue: 'main', name: 'GITBRANCH', quickFilterEnabled: false, selectedValue: 'NONE', sortMode: 'NONE', tagFilter: '*', type: 'GitParameterDefinition'
 		string(name: 'MVN_GOALS', defaultValue: '-U -T 1C')
 	}
     environment {
@@ -25,7 +25,7 @@ agent any
 			steps{
     			catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
 					script{
-						currentBuild.displayName = "#${BUILD_NUMBER} - ${env.PROJECT} - ${env.BRANCH_NAME}"
+						currentBuild.displayName = "#${BUILD_NUMBER} - ${env.PROJECT} - ${env.GIT_LOCAL_BRANCH}"
 						groovyfunctions = load "jenkinsfiles/scripts.groovy";
 						cleanWs();
 					}
