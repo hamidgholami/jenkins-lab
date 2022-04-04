@@ -1,5 +1,5 @@
 def initializeGit() {
-	sh label: '', script: '''
+    sh label: '', script: '''
               if [ ! -d ".git" ] 
               then 
               git init 

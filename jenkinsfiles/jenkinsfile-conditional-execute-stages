@@ -4,117 +4,117 @@ def preStageResult = true;
 pipeline {
 
 agent any
-	options {
-		timestamps ()
-		timeout(time: 100, unit: "MINUTES")
-		buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '1', numToKeepStr: '3')
-	}
-	// tools {
-	// 	maven 'maven-3.8.X'
-	// 	jdk 'jdk-1.8'
-	// }
-	parameters {
-		choice choices: ['project1', 'project2', 'project3'], name: 'PROJECT'
-		gitParameter branch: '', branchFilter: 'origin/(.*)', defaultValue: 'main', name: 'GITBRANCH', quickFilterEnabled: false, selectedValue: 'NONE', sortMode: 'NONE', tagFilter: '*', type: 'GitParameterDefinition'
-		string(name: 'MVN_GOALS', defaultValue: '-U -T 1C')
-	}
+    options {
+        timestamps ()
+        timeout(time: 100, unit: "MINUTES")
+        buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '1', numToKeepStr: '3')
+    }
+    tools {
+        // maven 'maven-3.8.X'
+        jdk 'jdk-11.0.1'
+    }
+    parameters {
+        choice choices: ['project1', 'project2', 'project3'], name: 'PROJECT'
+        gitParameter branch: '', branchFilter: 'origin/(.*)', defaultValue: 'main', name: 'GITBRANCH', quickFilterEnabled: false, selectedValue: 'NONE', sortMode: 'NONE', tagFilter: '*', type: 'GitParameterDefinition'
+        string(name: 'MVN_GOALS', defaultValue: '-U -T 1C')
+    }
     environment {
-		HAMID_USER="some_user"
+        HAMID_USER="some_user"
     }
     stages {
-		stage('Init'){
-			steps{
-    			catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
-					script{
-						currentBuild.displayName = "#${BUILD_NUMBER} - ${env.PROJECT} - ${env.GITBRANCH}"
-						groovyfunctions = load "jenkinsfiles/scripts.groovy";
-						cleanWs();
-					}
-    		    }
-    		}
-		}
-		stage('Checkout') {
-			when { expression { preStageResult == true } }
-				steps{
-					script {
-						try {
-							echo "Checkout"
-							echo "script{groovyfunctions.funcA('arg1', 'arg2', 'arg3')}"
-							echo "script{groovyfunctions.funcB()}"
-						} catch (Exception e) {
-								currentBuild.result = 'FAILURE'
-								preStageResult = false
-								}
-					}
-				}
-		}
-		stage('Compile') {
-			when { expression { preStageResult == true } }
-				steps {
-					script {
-						try {
-						echo "Compile"
-						echo "script{groovyfunctions.compile()}"
-						// sh "exit 1"
-						} catch (Exception e) {
-										currentBuild.result = 'FAILURE'
-										preStageResult = false                                        
-											}
-					}
-				}
-		}
-		stage('Build') {
-			when { expression { preStageResult == true } }
-				steps {
-					script {
-						try {
-							echo "Build"
-							echo "script{groovyfunctions.build()}"
-						} catch (Exception e) {
-										currentBuild.result = 'FAILURE'
-										preStageResult = false                                        
-											}
-					}
-				}
-		}
-		stage('Package') {
-			when { expression { preStageResult == true } }
-				steps {
-					script {
-						try {
-							echo "Package"
-							echo 'script{groovyfunctions.packagging("$WORKSPACE","${params.PROJECT}","${params.MVN_GOALS}")}'
-						} catch (Exception e) {
-										currentBuild.result = 'FAILURE'
-										preStageResult = false                                        
-											}
-					}
-				}
-		}
-		stage('Publish') {
-			when { expression { preStageResult == true } }
-				parallel {
-					stage('Show the Stage Name') {
-						steps {
-							echo "Deploy"
-						}
-					}
-					stage('Copy Binaries') {
-						steps {
-							echo 'script{groovyfunctions.copyBinariesTo("${env.BRANCH_NAME}", "${params.PROJECT}")}'
-						}
-					}
-					stage('Deploy Modules') {
-						steps {
-							echo "script{groovyfunctions.deployModules()}"
-						}
-					}
-				}
-		}
+        stage('Init'){
+            steps{
+                catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                    script{
+                        currentBuild.displayName = "#${BUILD_NUMBER} - ${env.PROJECT} - ${env.GITBRANCH}"
+                        groovyfunctions = load "jenkinsfiles/scripts.groovy";
+                        cleanWs();
+                    }
+                }
+            }
+        }
+        stage('Checkout') {
+            when { expression { preStageResult == true } }
+                steps{
+                    script {
+                        try {
+                            echo "Checkout"
+                            echo "script{groovyfunctions.funcA('arg1', 'arg2', 'arg3')}"
+                            echo "script{groovyfunctions.funcB()}"
+                        } catch (Exception e) {
+                                currentBuild.result = 'FAILURE'
+                                preStageResult = false
+                                }
+                    }
+                }
+        }
+        stage('Compile') {
+            when { expression { preStageResult == true } }
+                steps {
+                    script {
+                        try {
+                        echo "Compile"
+                        echo "script{groovyfunctions.compile()}"
+                        // sh "exit 1"
+                        } catch (Exception e) {
+                                        currentBuild.result = 'FAILURE'
+                                        preStageResult = false                                        
+                                            }
+                    }
+                }
+        }
+        stage('Build') {
+            when { expression { preStageResult == true } }
+                steps {
+                    script {
+                        try {
+                            echo "Build"
+                            echo "script{groovyfunctions.build()}"
+                        } catch (Exception e) {
+                                        currentBuild.result = 'FAILURE'
+                                        preStageResult = false                                        
+                                            }
+                    }
+                }
+        }
+        stage('Package') {
+            when { expression { preStageResult == true } }
+                steps {
+                    script {
+                        try {
+                            echo "Package"
+                            echo 'script{groovyfunctions.packagging("$WORKSPACE","${params.PROJECT}","${params.MVN_GOALS}")}'
+                        } catch (Exception e) {
+                                        currentBuild.result = 'FAILURE'
+                                        preStageResult = false                                        
+                                            }
+                    }
+                }
+        }
+        stage('Publish') {
+            when { expression { preStageResult == true } }
+                parallel {
+                    stage('Show the Stage Name') {
+                        steps {
+                            echo "Deploy"
+                        }
+                    }
+                    stage('Copy Binaries') {
+                        steps {
+                            echo 'script{groovyfunctions.copyBinariesTo("${env.BRANCH_NAME}", "${params.PROJECT}")}'
+                        }
+                    }
+                    stage('Deploy Modules') {
+                        steps {
+                            echo "script{groovyfunctions.deployModules()}"
+                        }
+                    }
+                }
+        }
     }
-	post {
-	    always {
-	        println "${currentBuild.durationString}"
-	    }
-	}
+    post {
+        always {
+            println "${currentBuild.durationString}"
+        }
+    }
 }
